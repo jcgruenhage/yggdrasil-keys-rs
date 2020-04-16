@@ -4,8 +4,8 @@ yggdrasil-keys-rs is a rust library for handling yggdrasil keys. It's written in
 
 ## Usage
 
-The documentation on this is a bit lacking right now, as this is still quite WIP.
-There are some examples available in the tests.
+There is rustdoc documentation available,
+and there are some examples available in the tests.
 
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.

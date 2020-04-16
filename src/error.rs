@@ -16,29 +16,24 @@
  *   You should have received a copy of the GNU Affero General Public License   *
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.     *
  ********************************************************************************/
-#![warn(missing_docs)]
+#![allow(missing_docs)]
 
-//! yggdrasil-keys
-//!
-//! Pure rust implementation of a subset of the key handling duties for
-//! the yggdrasil mesh network.
-//!
-//! This crate implements:
-//!  - (de)serializing keys into hex Strings
-//!  - generating new keys
-//!  - calculating Node and Tree IDs
-//!  - converting Node IDs into IPv6 addresses and subnets
+use custom_error::custom_error;
 
-mod error;
-mod keys;
-pub(crate) mod helper;
-
-#[cfg(test)]
-mod tests;
-
-pub use error::FromHexError;
-pub use keys::{
-    NodeIdentity,
-    SigningKeys, EncryptionKeys,
-    TreeId, NodeId
-};
+custom_error! {
+/// Describe error for trying to decode yggdrasil keys from hex strings.
+pub FromHexError
+    /// The `sec_hex` parameters can be either 64 hex encoded bytes,
+    /// if they are a keypair,
+    /// or 32 hex encoded bytes if they are just the private key.
+    /// The `pub_hex` parameters have to be 32 hex encoded bytes.
+    WrongKeyLength                                       = "key has wrong length",
+    /// The strings have to be valid hex.
+    Hex{source: hex::FromHexError}                       = "string is not valid hex: {source}",
+    /// If `pub_hex` is `Some` and `sec_hex` contains a keypair,
+    /// both supplied public keys have to be the same.
+    ConflictingPubKeys                                   = "pub keys in optional argument and included with secret key differ",
+    /// The signing keys are checked by the ed25519 implementation after parsing.
+    /// If something doesn't add up, this error will be returned.
+    InvalidSigKey{source: ed25519_dalek::SignatureError} = "the signature keys are invalit: {source}",
+}

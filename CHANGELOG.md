@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added:
  - a lot of rustdoc comments, and some general comments
+ - tests for hex encoding of keys
+
+### Fixed:
+ - hex encoding of the keys was broken, works now
 
 ### Changed:
  - restructured the source code, split it up into multiple files

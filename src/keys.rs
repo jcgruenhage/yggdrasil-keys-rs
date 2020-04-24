@@ -50,6 +50,15 @@ pub struct NodeIdentity {
 
 impl NodeIdentity {
     /// Generates two new key pairs using the supplied CSPRNG
+    ///
+    /// ```rust
+    /// use rand::thread_rng;
+    /// use std::net::Ipv6Addr;
+    /// use yggdrasil_keys::NodeIdentity;
+    ///
+    /// let node = NodeIdentity::new(&mut thread_rng());
+    /// let address : Ipv6Addr = node.node_id().into();
+    /// ```
     pub fn new<R: CryptoRng + RngCore>(csprng: &mut R) -> Self {
         let signing_keys = SigningKeys::new(csprng);
         let encryption_keys = EncryptionKeys::new(csprng);
@@ -126,16 +135,15 @@ impl SigningKeys {
         let secret_bytes = self.0.secret.as_bytes();
         let public_bytes = self.0.public.as_bytes();
         (
-            format!("{:x?}", secret_bytes),
-            format!("{:x?}", public_bytes),
+            hex::encode(secret_bytes),
+            hex::encode(public_bytes),
         )
     }
 
     /// Hex-encode the keypair into a combined String
     pub fn to_hex_joined(&self) -> String {
-        let secret_bytes = self.0.secret.as_bytes();
-        let public_bytes = self.0.public.as_bytes();
-        format!("{:x?}{:x?}", secret_bytes, public_bytes)
+        let (secret, public) = self.to_hex_split();
+        format!("{}{}", secret, public)
     }
 
     /// Calculate the Tree ID for this keypair.
@@ -176,16 +184,15 @@ impl EncryptionKeys {
         let secret_bytes = self.secret.to_bytes();
         let public_bytes = self.public.as_bytes();
         (
-            format!("{:x?}", secret_bytes),
-            format!("{:x?}", public_bytes),
+            hex::encode(secret_bytes),
+            hex::encode(public_bytes),
         )
     }
 
     /// Hex-encode the keypair into a combined String
     pub fn to_hex_joined(&self) -> String {
-        let secret_bytes = self.secret.to_bytes();
-        let public_bytes = self.public.as_bytes();
-        format!("{:x?}{:x?}", secret_bytes, public_bytes)
+        let (secret, public) = self.to_hex_split();
+        format!("{}{}", secret, public)
     }
 
     /// Calculate the Node ID for this keypair.

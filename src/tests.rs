@@ -46,12 +46,28 @@ fn test_ygg_key_parsing_and_strength() {
         Some(ENC_PUB_HEX),
     )
     .unwrap();
+
+    // Validate signing keys
     assert_eq!(identity.signing_keys.to_hex_split(), (String::from(SIG_SEC_HEX), String::from(SIG_PUB_HEX)));
     assert_eq!(identity.signing_keys.to_hex_joined(), String::from(SIG_PAIR_HEX));
-    // These two fail, but I'm not sure this is actually a problem. It comes from golangs
-    // curve25519 and curve25519-dalek handling scalars a bit differently
-    //assert_eq!(identity.encryption_keys.to_hex_split(), (String::from(ENC_SEC_HEX), String::from(ENC_PUB_HEX)));
-    //assert_eq!(identity.encryption_keys.to_hex_joined(), String::from(ENC_PAIR_HEX));
+
+    // Validate encryption keys
+    // These two fail, but this is not actually a problem. It comes from golangs
+    // curve25519 and curve25519-dalek handling scalars a bit differently, namely
+    // golang clamping the scalar before each multiplication, and rust just once during
+    // key generation.
+    //
+    // assert_eq!(identity.encryption_keys.to_hex_split(), (String::from(ENC_SEC_HEX), String::from(ENC_PUB_HEX)));
+    // assert_eq!(identity.encryption_keys.to_hex_joined(), String::from(ENC_PAIR_HEX));
+
+    let mut scalar_bytes = hex::decode(ENC_SEC_HEX).unwrap();
+    scalar_bytes[0] &= 248;
+    scalar_bytes[31] &= 127;
+    scalar_bytes[31] |= 64;
+    let patched_scalar = hex::encode(scalar_bytes);
+    assert_eq!(identity.encryption_keys.to_hex_split(), (patched_scalar, String::from(ENC_PUB_HEX)));
+
+    // Validate ID generation and strength measurement
     let node_id = identity.node_id();
     let tree_id = identity.tree_id();
     assert_eq!(node_id.to_hex(), NODE_ID_HEX);

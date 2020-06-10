@@ -21,6 +21,7 @@ use rand_core::{CryptoRng, RngCore};
 use sha2::{Digest, Sha512};
 
 use std::net::Ipv6Addr;
+use ipnet::Ipv6Net;
 
 use crate::{
     FromHexError,
@@ -229,8 +230,9 @@ impl NodeId {
     }
 
     /// Calculate the `/64` subnet for this Node ID with the given IP prefix.
-    pub fn subnet_with_prefix(&self, prefix: &[u8]) -> Ipv6Addr {
-        Ipv6Addr::from(self.address_bytes(prefix, true))
+    pub fn subnet_with_prefix(&self, prefix: &[u8]) -> Ipv6Net {
+        let addr = Ipv6Addr::from(self.address_bytes(prefix, true));
+        Ipv6Net::new(addr, 64).unwrap().trunc()
     }
 
     /// Calculate the address bytes.
@@ -272,7 +274,7 @@ impl NodeId {
     }
 
     /// Calculate the `/64` subnet for this Node ID with the default IP prefix.
-    pub fn subnet(&self) -> Ipv6Addr {
+    pub fn subnet(&self) -> Ipv6Net {
         self.subnet_with_prefix(&Self::IP_PREFIX)
     }
 }

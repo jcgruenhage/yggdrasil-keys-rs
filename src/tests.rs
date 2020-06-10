@@ -18,6 +18,7 @@
  ********************************************************************************/
 
 use std::net::Ipv6Addr;
+use ipnet::Ipv6Net;
 
 const ENC_PUB_HEX: &'static str = "551e45e3e871bf843be66a9188f7e229f198e685f169ee2dface9dcd2e518661";
 const ENC_SEC_HEX: &'static str = "04b3287a12837cbed0a9e235e2db1a7a300d4b7bdb63079da0e320090b898020";
@@ -35,6 +36,7 @@ const ADDR: Ipv6Addr = Ipv6Addr::new(
 const SNET: Ipv6Addr = Ipv6Addr::new(
     0x0314, 0x4377, 0xbb40, 0x648d, 0x0000, 0x0000, 0x0000, 0x0000,
 );
+const SNET_PREFIX : u8 = 64;
 
 #[test]
 fn test_ygg_key_parsing_and_strength() {
@@ -87,7 +89,7 @@ fn test_ygg_addr_generation() {
     .unwrap();
     let node_id = identity.node_id();
     assert_eq!(node_id.address(), ADDR);
-    assert_eq!(node_id.subnet(), SNET);
+    assert_eq!(node_id.subnet(), Ipv6Net::new(SNET, SNET_PREFIX).unwrap().trunc());
 }
 
 #[test]

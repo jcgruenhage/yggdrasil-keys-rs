@@ -14,6 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed:
  - restructured the source code, split it up into multiple files
+ - use ipnet crate and Ipv6Net for the subnets instead of plain Ipv6Addr's
 
 ## [v0.1.0] - 2020-04-16
 Initial release. This doesn't do much yet, and the docs are lacking. It can:

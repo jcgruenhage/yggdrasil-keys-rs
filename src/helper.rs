@@ -16,13 +16,13 @@
  *   You should have received a copy of the GNU Affero General Public License   *
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.     *
  ********************************************************************************/
-use generic_array::{typenum::consts::U64, GenericArray};
+use generic_array::{ArrayLength, GenericArray};
 use std::convert::TryInto;
 
 use crate::FromHexError;
 
 /// count the leading ones on sha512 hash
-pub(crate) fn leading_ones(sha512: &GenericArray<u8, U64>) -> u32 {
+pub(crate) fn leading_ones<T: ArrayLength<u8>>(sha512: &GenericArray<u8, T>) -> u32 {
     const INVERTER: u8 = 255u8;
     let mut leading_ones = 0u32;
     while (leading_ones / 8) < 64 {
@@ -43,19 +43,22 @@ pub(crate) fn leading_ones(sha512: &GenericArray<u8, U64>) -> u32 {
 /// count the leading ones on a sha512 hash,
 /// strip them plus the following zero off,
 /// return the count and the remainder.
-pub(crate) fn strip_ones(sha512: &GenericArray<u8, U64>) -> (u32, Vec<u8>) {
+pub(crate) fn strip_ones<T: ArrayLength<u8>>(sha512: &GenericArray<u8, T>) -> (u32, Vec<u8>) {
     let ones = leading_ones(sha512);
-    let shift = ((ones % 8u32) + 1u32) as u8;
+    let strip = ones + 1;
+    let shift = (strip % 8u32) as u8;
     // Cut away everything we'd drop anyway
-    let slice = &sha512.as_slice()[((ones / 8u32) as usize)..];
-    let mut vec = Vec::new();
-    for i in 0..slice.len() - 2 {
-        let lhs: u8 = slice[i] << shift;
-        let rhs: u8 = slice[i + 1] >> (8u8 - shift);
-        vec.push(lhs | rhs);
+    let mut slice = Vec::from(&sha512.as_slice()[((strip / 8u32) as usize)..]);
+    if shift != 0 {
+        for i in 0..slice.len() - 1 {
+            let lhs: u8 = slice[i] << shift;
+            let rhs: u8 = slice[i + 1] >> (8u8 - shift);
+            slice[i] = lhs | rhs;
+        }
+        let slice_len = slice.len();
+        slice[slice_len - 1] = slice[slice_len - 1] << shift;
     }
-    vec.push(slice[slice.len() - 1] << shift);
-    (ones, vec)
+    (ones, slice)
 }
 
 /// Get one or two 32 byte arrays out of one or two strings

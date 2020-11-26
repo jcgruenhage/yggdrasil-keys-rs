@@ -127,3 +127,26 @@ fn test_hex_pair_to_bytes() {
     // Return no public part if none is given
     assert!(hex_pair_to_bytes(secret, None).unwrap().1.is_none());
 }
+
+#[test]
+fn test_shifting_and_strip_leading_ones() {
+    use crate::helper::strip_ones;
+    use generic_array::arr;
+
+    assert_eq!(
+        (0, vec![0b00000000, 0b00000000]),
+        strip_ones(&arr![u8; 0b00000000, 0b00000000])
+    );
+    assert_eq!(
+        (0, vec![0b00100000, 0b00000000]),
+        strip_ones(&arr![u8; 0b00010000, 0b00000000])
+    );
+    assert_eq!(
+        (1, vec![0b00000000, 0b00000000]),
+        strip_ones(&arr![u8; 0b10000000, 0b00000000])
+    );
+    assert_eq!(
+        (8, vec![0b00100000]),
+        strip_ones(&arr![u8; 0b11111111, 0b00010000])
+    );
+}

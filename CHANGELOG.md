@@ -12,7 +12,67 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Overview
 
 
+- [`0.2.0`](#020) – _2020-11-26_
 - [`0.1.0`](#010) – _2020-11-26_
+
+## [0.2.0] – _2020.11.26_
+
+### Contributions
+
+This release is made possible by the following people (in alphabetical order).
+Thank you all for your contributions. Your work – no matter how significant – is
+greatly appreciated by the community. 💖
+
+- Jan Christian Grünhage (<jan.christian@gruenhage.xyz>)
+
+
+### Changes
+
+#### Maintenance
+
+- **bump version to 0.2.0 and update changelog** ([`b9b605d`])
+
+- **add crate details to Cargo.toml** ([`2eb8948`])
+
+- **update dependencies** ([`be18f94`])
+
+- **generate changelog with jilu** ([`cc9793b`])
+
+- **reformat code** ([`a5ca6f4`])
+
+- **update dependencies** ([`6a0581a`])
+
+#### Refactoring
+
+- **switch to thiserror** ([`a5832aa`])
+
+- **restructure code and add docs** ([`e2fe454`])
+
+#### Bug Fixes
+
+- **avoid overflow in shifting logic** ([`c51afe1`])
+
+  We previously had a bug which caused on average one eighth of the keys
+  to have wrong addresses generated for them. This commit fixes that, adds
+  regression tests and makes the methods more generic.
+
+- **extend and fix encryption key tests** ([`fea3f5c`])
+
+  This had failing tests before, which have now been replaced by working
+  tests. The broken tests were caused by golang's curve25519 impl doing
+  key generation slightly different than curve25519-dalek. In the end,
+  both impls end up with the same result when using the keys though, so
+  these tests failing is perfectly fine.
+
+- **patch hex encoding of keys** ([`1ed551a`])
+
+  Previously, the hex encoding of the keys was done wrongly, it's been
+  fixed by using the hex crate for encoding. This commit also added some
+  tests to check for regressions to this.
+
+#### Features
+
+- **use ipnet's Ipv6Net for subnets** ([`d6bd07f`])
 
 ## [0.1.0] – _2020.11.26_
 
@@ -28,7 +88,7 @@ Config(
     "feat": "Features",
     "fix": "Bug Fixes",
     "perf": "Performance Improvements",
-    "chore": "Maintenance Work",
+    "chore": "Maintenance",
     "refactor": "Refactoring"
   }
 )

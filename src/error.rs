@@ -16,24 +16,27 @@
  *   You should have received a copy of the GNU Affero General Public License   *
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.     *
  ********************************************************************************/
-#![allow(missing_docs)]
 
-use custom_error::custom_error;
+use thiserror::Error;
 
-custom_error! {
 /// Describe error for trying to decode yggdrasil keys from hex strings.
-pub FromHexError
+#[derive(Error, Debug)]
+pub enum FromHexError {
     /// The `sec_hex` parameters can be either 64 hex encoded bytes,
     /// if they are a keypair,
     /// or 32 hex encoded bytes if they are just the private key.
     /// The `pub_hex` parameters have to be 32 hex encoded bytes.
-    WrongKeyLength                                       = "key has wrong length",
+    #[error("key has wrong length")]
+    WrongKeyLength,
     /// The strings have to be valid hex.
-    Hex{source: hex::FromHexError}                       = "string is not valid hex: {source}",
+    #[error("string is not valid hex: {0}")]
+    Hex(#[from] hex::FromHexError),
     /// If `pub_hex` is `Some` and `sec_hex` contains a keypair,
     /// both supplied public keys have to be the same.
-    ConflictingPubKeys                                   = "pub keys in optional argument and included with secret key differ",
+    #[error("pub keys in optional argument and included with secret key differ")]
+    ConflictingPubKeys,
     /// The signing keys are checked by the ed25519 implementation after parsing.
     /// If something doesn't add up, this error will be returned.
-    InvalidSigKey{source: ed25519_dalek::SignatureError} = "the signature keys are invalit: {source}",
+    #[error("the signature keys are invalid: {0}")]
+    InvalidSigKey(#[from] ed25519_dalek::SignatureError)
 }

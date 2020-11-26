@@ -30,15 +30,11 @@
 //!  - converting Node IDs into IPv6 addresses and subnets
 
 mod error;
-mod keys;
 pub(crate) mod helper;
+mod keys;
 
 #[cfg(test)]
 mod tests;
 
 pub use error::FromHexError;
-pub use keys::{
-    NodeIdentity,
-    SigningKeys, EncryptionKeys,
-    TreeId, NodeId
-};
+pub use keys::{EncryptionKeys, NodeId, NodeIdentity, SigningKeys, TreeId};

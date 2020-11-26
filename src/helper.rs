@@ -59,7 +59,7 @@ pub(crate) fn strip_ones(sha512: &GenericArray<u8, U64>) -> (u32, Vec<u8>) {
 }
 
 /// Get one or two 32 byte arrays out of one or two strings
-/// 
+///
 /// You probably want to look at [`crate::NodeIdentity::from_hex`]
 ///
 /// `secret` is either two 32 byte hex encoded values concatenated

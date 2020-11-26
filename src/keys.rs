@@ -16,20 +16,16 @@
  *   You should have received a copy of the GNU Affero General Public License   *
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.     *
  ********************************************************************************/
-use generic_array::{GenericArray, typenum::consts::U64};
+use generic_array::{typenum::consts::U64, GenericArray};
 use rand_core::{CryptoRng, RngCore};
 use sha2::{Digest, Sha512};
 
-use std::net::Ipv6Addr;
 use ipnet::Ipv6Net;
+use std::net::Ipv6Addr;
 
 use crate::{
+    helper::{hex_pair_to_bytes, leading_ones, strip_ones},
     FromHexError,
-    helper::{
-        hex_pair_to_bytes,
-        leading_ones,
-        strip_ones
-    }
 };
 
 /// Represents a node in the yggdrasil network. Contains two key pairs,
@@ -135,10 +131,7 @@ impl SigningKeys {
     pub fn to_hex_split(&self) -> (String, String) {
         let secret_bytes = self.0.secret.as_bytes();
         let public_bytes = self.0.public.as_bytes();
-        (
-            hex::encode(secret_bytes),
-            hex::encode(public_bytes),
-        )
+        (hex::encode(secret_bytes), hex::encode(public_bytes))
     }
 
     /// Hex-encode the keypair into a combined String
@@ -184,10 +177,7 @@ impl EncryptionKeys {
     pub fn to_hex_split(&self) -> (String, String) {
         let secret_bytes = self.secret.to_bytes();
         let public_bytes = self.public.as_bytes();
-        (
-            hex::encode(secret_bytes),
-            hex::encode(public_bytes),
-        )
+        (hex::encode(secret_bytes), hex::encode(public_bytes))
     }
 
     /// Hex-encode the keypair into a combined String
@@ -205,8 +195,8 @@ impl EncryptionKeys {
 /// The Node ID is a 64-byte identifier which is calculated by taking the SHA512 sum of the node's public encryption key. The node's permanent address is derived from the Node ID.
 pub struct NodeId(GenericArray<u8, U64>);
 impl NodeId {
-    const ADDR_BYTE : u8 = 0xfeu8;
-    const SNET_BYTE : u8 = 0x01u8;
+    const ADDR_BYTE: u8 = 0xfeu8;
+    const SNET_BYTE: u8 = 0x01u8;
     /// This prefix is taken from [yggdrasil-go](yggdrasil-go),
     /// it's the one currently used in the yggdrasil network,
     /// namely `200::/7`.
@@ -241,12 +231,12 @@ impl NodeId {
         assert!(prefix.len() <= if net { 6 } else { 14 });
 
         // Create 16 bytes array and copy the prefix into it
-        let mut bytes : [u8; 16] = [0u8; 16];
+        let mut bytes: [u8; 16] = [0u8; 16];
         bytes[0..prefix.len()].copy_from_slice(prefix);
 
         // Set the last bit of the prefix to one if its a subnet,
         // or zero if its an address
-        bytes[prefix.len() - 1] = if net { 
+        bytes[prefix.len() - 1] = if net {
             bytes[prefix.len() - 1] | Self::SNET_BYTE
         } else {
             bytes[prefix.len() - 1] & Self::ADDR_BYTE

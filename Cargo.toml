@@ -26,3 +26,8 @@ thiserror = "1.0.22"
 
 [dev-dependencies]
 rand = "0.7.3"
+criterion = "0.3.3"
+
+[[bench]]
+name = "key_generation"
+harness = false

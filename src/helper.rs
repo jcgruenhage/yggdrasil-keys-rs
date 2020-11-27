@@ -23,14 +23,10 @@ use crate::FromHexError;
 
 /// count the leading ones on sha512 hash
 pub(crate) fn leading_ones<T: ArrayLength<u8>>(sha512: &GenericArray<u8, T>) -> u32 {
-    const INVERTER: u8 = 255u8;
     let mut leading_ones = 0u32;
     while (leading_ones / 8) < 64 {
         let current_byte = sha512[(leading_ones / 8) as usize];
-        // This inversion is not necessary, leading_ones() does exist. It is nightly only for
-        // now though, so we'll keep it for now.
-        let inverted_byte = current_byte ^ INVERTER;
-        let local_leading_ones = inverted_byte.leading_zeros();
+        let local_leading_ones = current_byte.leading_zeros();
         leading_ones += local_leading_ones;
         // Break if there's a one in the byte
         if local_leading_ones != 8 {

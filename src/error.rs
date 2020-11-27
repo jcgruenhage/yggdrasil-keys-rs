@@ -38,5 +38,5 @@ pub enum FromHexError {
     /// The signing keys are checked by the ed25519 implementation after parsing.
     /// If something doesn't add up, this error will be returned.
     #[error("the signature keys are invalid: {0}")]
-    InvalidSigKey(#[from] ed25519_dalek::SignatureError)
+    InvalidSigKey(#[from] ed25519_dalek::SignatureError),
 }

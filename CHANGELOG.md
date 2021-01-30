@@ -12,8 +12,36 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Overview
 
 
+- [`0.2.1`](#021) – _2020-11-27_
 - [`0.2.0`](#020) – _2020-11-26_
 - [`0.1.0`](#010) – _2020-11-26_
+
+## [0.2.1] – _2020.11.27_
+
+### Contributions
+
+This release is made possible by the following people (in alphabetical order).
+Thank you all for your contributions. Your work – no matter how significant – is
+greatly appreciated by the community. 💖
+
+- Jan Christian Grünhage (<jan.christian@gruenhage.xyz>)
+
+
+### Changes
+
+#### Maintenance
+
+- **use leading_ones instead inversion + _zeros** ([`c3177af`])
+
+  Back when this was written, leading_ones was not stabilized, but it's
+  been stabilized since, so instead of inverting bytes and using
+  leading_zeros to get leading ones, we're now using leading_ones.
+
+- **reformat code** ([`9797a65`])
+
+#### Features
+
+- **add first benchmark** ([`214d038`])
 
 ## [0.2.0] – _2020.11.26_
 
@@ -30,7 +58,7 @@ greatly appreciated by the community. 💖
 
 #### Maintenance
 
-- **bump version to 0.2.0 and update changelog** ([`b9b605d`])
+- **bump version to 0.2.0 and update changelog** ([`59d3383`])
 
 - **add crate details to Cargo.toml** ([`2eb8948`])
 
@@ -78,6 +106,7 @@ greatly appreciated by the community. 💖
 
 Initial release. Supports basic generation of keys, parsing of
 yggdrasil-go keys and generation of addresses for those keys.
+
 
 
 

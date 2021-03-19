@@ -12,11 +12,12 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Overview
 
 
-- [`0.2.1`](#021) – _2020-11-27_
+- [`0.2.2`](#022) – _2021-03-19_
+- [`0.2.1`](#021) – _2021-01-30_
 - [`0.2.0`](#020) – _2020-11-26_
 - [`0.1.0`](#010) – _2020-11-26_
 
-## [0.2.1] – _2020.11.27_
+## [0.2.2] – _2021.03.19_
 
 ### Contributions
 
@@ -30,6 +31,44 @@ greatly appreciated by the community. 💖
 ### Changes
 
 #### Maintenance
+
+- **gitignore idea** ([`fad85c2`])
+
+- **add CI pipeline** ([`a9a1fa9`])
+
+#### Refactoring
+
+- **make clippy happy** ([`1eb5939`])
+
+#### Bug Fixes
+
+- **actually use leading ones** ([`d827864`])
+
+  We claimed to switch to leading_ones in
+  c3177af289bfd8862e43f507b81317b60c9038c0, but that was actually not
+  true. The commit removed the inverting, but kept leading_zeros, which
+  means that it broke the library.
+
+  To prevent further breakage like this going unnoticed, we'll use CI for
+  publishing from now on, which means a release will only get onto
+  crates.io after the CI pipeline succeeded
+
+## [0.2.1] – _2021.01.30_
+
+### Contributions
+
+This release is made possible by the following people (in alphabetical order).
+Thank you all for your contributions. Your work – no matter how significant – is
+greatly appreciated by the community. 💖
+
+- Jan Christian Grünhage (<jan.christian@gruenhage.xyz>)
+
+
+### Changes
+
+#### Maintenance
+
+- **bump version to 0.2.1 and update changelog** ([`dae6e3d`])
 
 - **use leading_ones instead inversion + _zeros** ([`c3177af`])
 

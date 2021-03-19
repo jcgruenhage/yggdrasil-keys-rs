@@ -26,7 +26,7 @@ pub(crate) fn leading_ones<T: ArrayLength<u8>>(sha512: &GenericArray<u8, T>) -> 
     let mut leading_ones = 0u32;
     while (leading_ones / 8) < 64 {
         let current_byte = sha512[(leading_ones / 8) as usize];
-        let local_leading_ones = current_byte.leading_zeros();
+        let local_leading_ones = current_byte.leading_ones();
         leading_ones += local_leading_ones;
         // Break if there's a one in the byte
         if local_leading_ones != 8 {

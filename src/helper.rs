@@ -52,7 +52,7 @@ pub(crate) fn strip_ones<T: ArrayLength<u8>>(sha512: &GenericArray<u8, T>) -> (u
             slice[i] = lhs | rhs;
         }
         let slice_len = slice.len();
-        slice[slice_len - 1] = slice[slice_len - 1] << shift;
+        slice[slice_len - 1] <<= shift;
     }
     (ones, slice)
 }

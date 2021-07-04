@@ -12,10 +12,42 @@ The format is based on [Keep a Changelog], and this project adheres to
 ## Overview
 
 
+- [`0.3.0`](#030) – _2021-07-04_
 - [`0.2.2`](#022) – _2021-03-19_
 - [`0.2.1`](#021) – _2021-01-30_
 - [`0.2.0`](#020) – _2020-11-26_
 - [`0.1.0`](#010) – _2020-11-26_
+
+## [0.3.0] – _2021.07.04_
+
+### Contributions
+
+This release is made possible by the following people (in alphabetical order).
+Thank you all for your contributions. Your work – no matter how significant – is
+greatly appreciated by the community. 💖
+
+- Jan Christian Grünhage (<jan.christian@gruenhage.xyz>)
+- Niklas Zender (<n.zender@famedly.com>)
+
+
+### Changes
+
+#### Features
+
+- **support yggdrasil 0.4** ([`247007a`])
+
+  This is a major change, the size of this crate reduced significantly,
+  and compatibility with older yggdrasil versions is dropped. If you need
+  yggdrasil <0.4 keys, please continue using the old version of the
+  crate.
+
+#### Maintenance
+
+- **add license scanner** ([`72eda77`])
+
+- **add badges to readme** ([`c5ffd07`])
+
+- **add code coverage** ([`6f0d88e`])
 
 ## [0.2.2] – _2021.03.19_
 
@@ -31,6 +63,8 @@ greatly appreciated by the community. 💖
 ### Changes
 
 #### Maintenance
+
+- **bump version to 0.2.2 and update changelog** ([`e37ce3c`])
 
 - **gitignore idea** ([`fad85c2`])
 

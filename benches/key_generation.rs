@@ -1,6 +1,5 @@
 use criterion::{black_box, criterion_group, criterion_main, Criterion};
 use rand::thread_rng;
-use std::net::Ipv6Addr;
 use yggdrasil_keys::NodeIdentity;
 
 fn generate_keys(c: &mut Criterion) {
@@ -8,7 +7,7 @@ fn generate_keys(c: &mut Criterion) {
     c.bench_function("generate_key", |b| {
         b.iter(|| {
             let node = NodeIdentity::new(&mut rng);
-            let leading_ones = node.node_id().strength();
+            let leading_ones = node.strength();
             black_box(leading_ones);
         })
     });

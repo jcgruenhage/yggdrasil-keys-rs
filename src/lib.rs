@@ -37,4 +37,4 @@ mod keys;
 mod tests;
 
 pub use error::FromHexError;
-pub use keys::{EncryptionKeys, NodeId, NodeIdentity, SigningKeys, TreeId};
+pub use keys::NodeIdentity;

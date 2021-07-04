@@ -1,6 +1,6 @@
 # yggdrasil-keys-rs
 
-yggdrasil-keys-rs is a rust library for handling yggdrasil keys. It's written in pure rust, using the ed25519 and curve25519 implementations from dalek.rs.
+yggdrasil-keys-rs is a rust library for handling yggdrasil keys. It's written in pure rust, using the ed25519 implementation from dalek.rs.
 
 ## Usage
 

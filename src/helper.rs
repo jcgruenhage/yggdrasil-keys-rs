@@ -16,16 +16,15 @@
  *   You should have received a copy of the GNU Affero General Public License   *
  *   along with this program.  If not, see <https://www.gnu.org/licenses/>.     *
  ********************************************************************************/
-use generic_array::{ArrayLength, GenericArray};
 use std::convert::TryInto;
 
 use crate::FromHexError;
 
-/// count the leading ones on sha512 hash
-pub(crate) fn leading_ones<T: ArrayLength<u8>>(sha512: &GenericArray<u8, T>) -> u32 {
+/// count the leading ones on a byte array
+pub(crate) fn leading_ones<const T: usize>(array: [u8; T]) -> u32 {
     let mut leading_ones = 0u32;
     while (leading_ones / 8) < 64 {
-        let current_byte = sha512[(leading_ones / 8) as usize];
+        let current_byte = array[(leading_ones / 8) as usize];
         let local_leading_ones = current_byte.leading_ones();
         leading_ones += local_leading_ones;
         // Break if there's a one in the byte
@@ -36,15 +35,15 @@ pub(crate) fn leading_ones<T: ArrayLength<u8>>(sha512: &GenericArray<u8, T>) -> 
     leading_ones
 }
 
-/// count the leading ones on a sha512 hash,
+/// count the leading ones on a byte array,
 /// strip them plus the following zero off,
 /// return the count and the remainder.
-pub(crate) fn strip_ones<T: ArrayLength<u8>>(sha512: &GenericArray<u8, T>) -> (u32, Vec<u8>) {
-    let ones = leading_ones(sha512);
+pub(crate) fn strip_ones<const T: usize>(array: [u8; T]) -> (u32, Vec<u8>) {
+    let ones = leading_ones(array);
     let strip = ones + 1;
     let shift = (strip % 8u32) as u8;
     // Cut away everything we'd drop anyway
-    let mut slice = Vec::from(&sha512.as_slice()[((strip / 8u32) as usize)..]);
+    let mut slice = Vec::from(&array[((strip / 8u32) as usize)..]);
     if shift != 0 {
         for i in 0..slice.len() - 1 {
             let lhs: u8 = slice[i] << shift;

@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 - Add automatic changelog generation
 - Move to private fork
 - [**breaking**] Bump dependencies, including ed25519_dalek v1 to v2
+- Bump version to v0.4.0
 
 
 ## [0.3.0] - 2024-06-25

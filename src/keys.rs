@@ -38,7 +38,7 @@ use crate::{
 /// [YS001: Yggdrasil Core Specification]: https://github.com/yggdrasil-network/yggdrasil-specs/blob/ys001/ys001-yggdrasil-core-specification.md
 pub struct NodeIdentity {
     /// ed25519 key pair, used as the node identity and for address generation
-    pub signing_keys: ed25519_dalek::Keypair,
+    pub signing_keys: ed25519_dalek::SigningKey,
 }
 
 impl NodeIdentity {
@@ -62,7 +62,7 @@ impl NodeIdentity {
     /// let address : Ipv6Addr = node.into();
     /// ```
     pub fn new<R: CryptoRng + RngCore>(csprng: &mut R) -> Self {
-        let signing_keys = ed25519_dalek::Keypair::generate(csprng);
+        let signing_keys = ed25519_dalek::SigningKey::generate(csprng);
         Self { signing_keys }
     }
 
@@ -81,21 +81,16 @@ impl NodeIdentity {
     ///  and additionally a public key to the `pub_hex` argument,
     ///  the two keys will be compared. If they differ, the function returns an error.
     pub fn from_hex(sec_hex: &str, pub_hex: Option<&str>) -> Result<Self, FromHexError> {
-        let (secret, public) = hex_pair_to_bytes(sec_hex, pub_hex)?;
-        let secret = ed25519_dalek::SecretKey::from_bytes(&secret)?;
-        let public = match public {
-            Some(public) => ed25519_dalek::PublicKey::from_bytes(&public)?,
-            None => ed25519_dalek::PublicKey::from(&secret),
-        };
-        Ok(Self {
-            signing_keys: ed25519_dalek::Keypair { secret, public },
-        })
+        let (secret, _public) = hex_pair_to_bytes(sec_hex, pub_hex)?;
+        let signing_keys = ed25519_dalek::SigningKey::from_bytes(&secret);
+        Ok(Self { signing_keys })
     }
 
     /// Hex-encode the secret and public keys into a String each
     pub fn to_hex_split(&self) -> (String, String) {
-        let secret_bytes = self.signing_keys.secret.as_bytes();
-        let public_bytes = self.signing_keys.public.as_bytes();
+        let secret_bytes = self.signing_keys.as_bytes();
+        let public_key = self.signing_keys.verifying_key();
+        let public_bytes = public_key.as_bytes();
         (hex::encode(secret_bytes), hex::encode(public_bytes))
     }
 
@@ -124,7 +119,7 @@ impl NodeIdentity {
 
     /// Clone and invert public key
     fn inverted_pub_key(&self) -> [u8; 32] {
-        let mut inverse_public = *self.signing_keys.public.as_bytes();
+        let mut inverse_public = *self.signing_keys.verifying_key().as_bytes();
         for byte in inverse_public.iter_mut() {
             *byte = !*byte;
         }

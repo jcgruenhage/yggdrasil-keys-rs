@@ -9,12 +9,15 @@ The format is based on [Keep a Changelog], and this project adheres to
 [semantic versioning]: https://semver.org/spec/v2.0.0.html
 [conventional commits]: https://www.conventionalcommits.org/en/v1.0.0/
 
-## [0.3.1] - 2024-06-25
+## [0.4.0] - 2024-06-25
+### Breaking changes
+ - Bump dependencies, including ed25519_dalek v1 to v2
 
 ### ⚙️ Miscellaneous Tasks
 
 - Add automatic changelog generation
 - Move to private fork
+- [**breaking**] Bump dependencies, including ed25519_dalek v1 to v2
 
 
 ## [0.3.0] - 2024-06-25

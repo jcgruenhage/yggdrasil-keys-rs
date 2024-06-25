@@ -5,9 +5,9 @@ authors = ["Jan Christian Grünhage <jan.christian@gruenhage.xyz>"]
 edition = "2018"
 license = "AGPL-3.0-only"
 description = "Quickly generate yggdrasil keys"
-homepage = "https://gitlab.com/famedly/libraries/yggdrasil-keys-rs"
+homepage = "https://github.com/jcgruenhage/yggdrasil-keys-rs"
 documentation = "https://docs.rs/yggdrasil-keys"
-repository = "https://gitlab.com/famedly/libraries/yggdrasil-keys-rs"
+repository = "https://github.com/jcgruenhage/yggdrasil-keys-rs"
 readme = "README.md"
 keywords = ["yggdrasil", "networking", "crypto"]
 

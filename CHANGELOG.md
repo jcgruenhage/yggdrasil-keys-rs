@@ -14,6 +14,7 @@ The format is based on [Keep a Changelog], and this project adheres to
 ### ⚙️ Miscellaneous Tasks
 
 - Add automatic changelog generation
+- Move to private fork
 
 
 ## [0.3.0] - 2024-06-25

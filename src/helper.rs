@@ -1,7 +1,8 @@
 /********************************************************************************
  *   yggdrasil-keys-rs, a library for handling yggdrasil keys in rust           *
  *                                                                              *
- *   Copyright (C) 2020 Famedly GmbH                                            *
+ *   Copyright (C) 2020-2021 Famedly GmbH                                       *
+ *   Copyright (C) 2024 Jan Christian Grünhage                                  *
  *                                                                              *
  *   This program is free software: you can redistribute it and/or modify       *
  *   it under the terms of the GNU Affero General Public License as             *
